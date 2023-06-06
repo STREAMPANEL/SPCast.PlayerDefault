@@ -13,7 +13,6 @@ We're using it for SPCast. The changed code should not be compatible with Shoutc
 - Current song
 - History of played songs
 - Cover art of the current song ([iTunes API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/))
-- Lyrics of the current song ([Vagalume API](https://api.vagalume.com.br/docs/))
 - Responsive design
 
 ## Keyboard Controls:
