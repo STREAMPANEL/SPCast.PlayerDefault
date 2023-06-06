@@ -1,8 +1,8 @@
 @charset 'utf-8';
-@import url('https://fonts.googleapis.com/css?family=Share:400i,700i');
-@import url('bootstrap.min.css');
+@import url('https://spuassets.streampanel.cloud/global/plugins/bootstrap/4.3.1/css/bootstrap.min.css');
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -11,18 +11,6 @@ body {
     flex-flow: row;
     justify-content: center;
     overflow-x: hidden;
-}
-
-.cover-site {
-    min-width: 100%;
-    min-height: 100%;
-    position: fixed;
-    background: url('../img/background.jpg') no-repeat;
-    background-position: center;
-    background-size: cover;
-    transition: background-image 1s;
-    background-position: center;
-    background-attachment: fixed;
 }
 
 #bgCover {
@@ -52,17 +40,6 @@ body {
     position: relative;
     z-index: 3;
     margin-top: 25px;
-}
-
-.cover-album {
-    max-width: 80%;
-    margin: auto;
-    background: url('../img/bg-capa.jpg') no-repeat;
-    background-size: cover;
-    border: 1px solid #383838;
-    box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.4);
-    transition: background-image 1s;
-    margin-bottom: 15px;
 }
 
 .watermark {
@@ -124,31 +101,6 @@ body {
 
 .volume-control {
     display: none;
-}
-
-.vagalume a {
-    color: #fff;
-    text-decoration: underline;
-}
-
-.lyrics {
-    text-transform: uppercase;
-    text-decoration: underline;
-    color: #fff;
-    font-size: 1em;
-    font-weight: 400;
-    outline: none;
-    transition: .3s;
-}
-
-.lyrics:active {
-    text-decoration: none;
-    color: #fff;
-}
-
-.lyrics:visited {
-    text-decoration: none;
-    color: #fff;
 }
 
 .modal-content {
@@ -247,7 +199,6 @@ input[type=range]::-ms-thumb {
     cursor: pointer;
 }
 
-
 .historic h2 {
     color: #fff;
     border-bottom: 2px solid #fff;
@@ -259,18 +210,6 @@ input[type=range]::-ms-thumb {
 
 .historic article {
     margin: 5px 0;
-}
-
-.historic .cover-historic {
-    width: 95px;
-    height: 95px;
-    margin-right: 15px;
-    float: left;
-    background: url('../img/bg-capa.jpg') no-repeat;
-    background-size: cover;
-    border: 1px solid #383838;
-    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
-    transition: background-image 1s;
 }
 
 .historic .music-info {
@@ -296,10 +235,6 @@ input[type=range]::-ms-thumb {
     .volume-control {
         display: flex;
     }
-
-    .call-lyrics {
-        margin-top: 20px;
-    }
 }
 
 @media(min-width: 768px) {
@@ -317,7 +252,8 @@ input[type=range]::-ms-thumb {
     }
 
     .logo img {
-        max-width: 200px;
+        max-width: 300px;
+        margin: 65px 0;
     }
 
     .web-player {
@@ -329,11 +265,6 @@ input[type=range]::-ms-thumb {
         margin: 10px auto;
         min-width: 320px;
         height: 320px;
-    }
-
-    .logo img {
-        max-width: 300px;
-        margin: 65px 0;
     }
 
     .info-current-song {
