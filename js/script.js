@@ -56,11 +56,10 @@ window.onload = function () {
 
     // Set height of cover art equal to its width
     coverArt.style.height = coverArt.offsetWidth + 'px';
-
 }
 
-// Create new audio object with URL_STREAMING
-var audio = new Audio(URL_STREAMING);
+// Create new audio object
+var audio = new Audio();
 
 // DOM control
 function Page() {
@@ -375,8 +374,11 @@ function togglePlay() {
         audio.pause();
     } else {
         // Otherwise, load and play
+        audio.src = URL_STREAMING;
+        audio.addEventListener('canplay', function () {
+            audio.play();
+        });
         audio.load();
-        audio.play();
     }
 }
 
