@@ -1,0 +1,10 @@
+# Maximum cache lifetime of 24 hours
+<Files "scripts.js">
+    ExpiresDefault A86400
+    Header set Cache-Control "max-age=86400, public"
+</Files>
+
+<Files "scripts.min.js">
+    ExpiresDefault A86400
+    Header set Cache-Control "max-age=86400, public"
+</Files>
