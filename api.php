@@ -25,8 +25,8 @@ $getURL = $_GET['url'];
 // Replace '/stream' with an empty string in the URL
 $replacedURL = str_replace('/stream', '', $getURL);
 
-// Construct the API endpoint URL using the replaced URL
-$url = "https://$replacedURL/$endpointID";
+// Construct the current song text file URL
+$url = "https://$replacedURL/currentSong.txt";
 
 // Check if the user ID is present in the GET request
 if (empty($_GET['userid'])) {
@@ -40,56 +40,59 @@ $userID = $_GET['userid'];
 // Create a log file for the user
 $logFilename = "log/$userID.log";
 
-// Initialize curl request with the given URL 
-$curl = curl_init($url);
+// Function to fetch data from a text file
+function fetchTextFile($url)
+{
 
-// Set options for the curl request
-curl_setopt_array($curl, [
-	// Return the transfer 
-	CURLOPT_RETURNTRANSFER => 1,
-	// Do not verify SSL certificate
-	CURLOPT_SSL_VERIFYPEER => false,
-	// Set user agent
-	CURLOPT_USERAGENT => 'SPMetaDataCrawler/1.0',
-	// Set username and password
-	CURLOPT_USERPWD => "$endpointUsername:$endpointPassword"
-]);
+	// Initialize cURL session
+	$curl = curl_init($url);
 
-// Execute the curl request
-$data = curl_exec($curl);
+	// Set options for the cURL request
+	curl_setopt_array($curl, [
+		// Return the transfer 
+		CURLOPT_RETURNTRANSFER => 1,
+		// Do not verify SSL certificate
+		CURLOPT_SSL_VERIFYPEER => false,
+		// Set user agent
+		CURLOPT_USERAGENT      => 'SPMetaDataCrawler/1.0',
+	]);
 
-// Close the curl request
-curl_close($curl);
+	// Execute the cURL request
+	$text_data = curl_exec($curl);
 
-// Check if the data is empty
-if (!empty($data)) {
-	// Decode the JSON data into an array
-	$spcast_stats = json_decode($data, true);
-
-	// Check if the metadata for the stream live exists
-	if (isset($spcast_stats['mounts']['/stream_live']['metadata'])) {
-		// Set the source to the stream_live metadata
-		$spcast_stats_source = $spcast_stats['mounts']['/stream_live']['metadata'];
-	} else {
-		// Set the source to the autodj metadata
-		$spcast_stats_source = $spcast_stats['mounts']['/autodj']['metadata'];
+	// Check for cURL errors
+	if (curl_errno($curl)) {
+		echo 'cURL Error: ' . curl_error($curl);
+		// Handle the error as per your requirement
+		return null;
 	}
 
-	// Get the currently playing song
-	$currently_playing = $spcast_stats_source['now_playing'];
+	// Close cURL session
+	curl_close($curl);
+
+	return $text_data;
+}
+
+// Fetch data from the current song text file
+$current_song_data = fetchTextFile($url);
+
+// Check if data was retrieved successfully
+if (!empty($current_song_data)) {
+	// Clean up the song data (assuming it's a single line format)
+	$current_song_data = trim($current_song_data);
 
 	// Define incorrect and correct glyphs
 	$incorrect_glyphs = ["Ã¶", "Ã¤", "Ã¼", "ÃŸ", "Ã–", "Ã„", "Ãœ"];
-	$correct_glyphs = ["ö", "ä", "ü", "ß", "Ö", "Ä", "Ü"];
+	$correct_glyphs   = ["ö", "ä", "ü", "ß", "Ö", "Ä", "Ü"];
 
 	// Replace incorrect glyphs with correct ones
-	$currently_playing = str_replace($incorrect_glyphs, $correct_glyphs, $currently_playing);
+	$current_song_data = str_replace($incorrect_glyphs, $correct_glyphs, $current_song_data);
 
 	// Split the string into artist and song
-	$currently_playing = explode(' - ', $currently_playing, 2);
+	$currently_playing = explode(' - ', $current_song_data, 2);
 
 	// Set the current song and artist in the array
-	$array['currentSong'] = $currently_playing[1];
+	$array['currentSong']   = $currently_playing[1];
 	$array['currentArtist'] = explode(';', $currently_playing[0])[0];
 
 	// Check if the log file exists
@@ -120,44 +123,70 @@ if (!empty($data)) {
 		// Write the UTF-8 string to the file
 		file_put_contents($logFilename, implode("\n", $track_list_utf8));
 	}
-} else {
-	// Set an error message in the array
-	$array = ['error' => 'Failed to fetch data'];
-}
 
-// Get the contents of the log file and store it in the $track_history variable 
-$track_history = file($logFilename, FILE_IGNORE_NEW_LINES);
+	// Get the contents of the log file and store it in the $track_history variable 
+	$track_history = file($logFilename, FILE_IGNORE_NEW_LINES);
 
-// remove first element from history
-array_shift($track_history);
+	// Remove first element from history
+	array_shift($track_history);
 
-// check if historic is true
-if ($historic) {
-	// set counter to 0
-	$i = 0;
+	// Check if historic is true
+	if ($historic) {
+		// Set counter to 0
+		$i = 0;
 
-	// loop through track history
-	foreach ($track_history as $line) {
-		// if counter is greater than 6, skip the iteration
-		if ($i > 6) {
-			continue;
+		// Loop through track history
+		foreach ($track_history as $line) {
+			// If counter is greater than 6, skip the iteration
+			if ($i > 6) {
+				continue;
+			}
+
+			// Explode line into artist and song
+			$track       = explode(' - ', $line, 2);
+			$last_artist = explode(';', $track[0])[0];
+			$last_song   = str_replace(["\n", "\r"], '', $track[1]);
+
+			// Add artist and song to array
+			$array['songHistory'][] = ['artist' => $last_artist, 'song' => $last_song];
+
+			// Increment counter
+			++$i;
 		}
-
-		// explode line into artist and song
-		$track = explode(' - ', $line, 2);
-		$last_artist = explode(';', $track[0])[0];
-		$last_song = str_replace(["\n", "\r"], '', $track[1]);
-
-		// add artist and song to array
-		$array['songHistory'][] = ['artist' => $last_artist, 'song' => $last_song];
-
-		// increment counter
-		++$i;
 	}
+
+	// Initialize cURL for fetching ChatGPT Songinfo asynchronously
+	$info_url = 'https://playlist.spcast.eu/g/generate_info.php';
+	$params   = http_build_query(array(
+		'artist' => $currently_playing[0],
+		'title'  => $currently_playing[1],
+	));
+	$info_url = $info_url . '?' . $params;
+
+	// Initialize cURL session
+	$curl_info = curl_init();
+	curl_setopt($curl_info, CURLOPT_URL, $info_url);
+	curl_setopt($curl_info, CURLOPT_RETURNTRANSFER, true);
+
+	// Set a short timeout for the async request (adjust as needed)
+	curl_setopt($curl_info, CURLOPT_TIMEOUT_MS, 100);
+
+	// Execute cURL request asynchronously
+	curl_exec($curl_info);
+
+	// Close cURL session
+	curl_close($curl_info);
+
+	// Set the content type to JSON
+	header('Content-type: application/json', true);
+
+	// Encode the array as a JSON string and output it
+	echo json_encode($array);
+
+	// Terminate script execution
+	die();
+} else {
+	// Handle case where current song data retrieval failed
+	echo json_encode(['error' => 'Failed to retrieve current song data.']);
+	die();
 }
-
-// Set the content type to JSON
-header('Content-type: application/json', true);
-
-// Encode the array as a JSON string and output it
-echo json_encode($array);

@@ -1,5 +1,5 @@
 <?php
 
-$endpointUsername = "username";
-$endpointPassword = "password";
-$endpointID = "mountapi";
+$endpointUsername = "username"; // username
+$endpointPassword = "password"; // password
+$endpointID       = "mountapi"; // like /admin

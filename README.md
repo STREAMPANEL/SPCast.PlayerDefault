@@ -1,21 +1,26 @@
 # SPCast.PlayerDefault
-### Responsive web player with lyrics for SPCast streaming.
+## Responsive web player with lyrics for SPCast
 
-Thanks to the Original Project for the idea of this: [https://github.com/gsavio/player-shoutcast-html5](https://github.com/gsavio/player-shoutcast-html5).
+Thanks to the original project for the idea: [https://github.com/gsavio/player-shoutcast-html5](https://github.com/gsavio/player-shoutcast-html5).
 
-We're using it for SPCast. The changed code should not be compatible with Shoutcast or Icecast Servers anymore!
+We're using it for SPCast. The modified code should not be compatible with Shoutcast or Icecast servers anymore!
+You can find more about SPCast [here](https://www.spcast.eu/).
 
-## Required:
+## Requirements:
 - PHP >= 8.x
 - cURL
 
-### HTML5 Player for SPCast streams with info like:
+## HTML5 Player for SPCast streams with features like:
 - Current song
 - History of played songs
-- Cover art of the current song ([iTunes API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/))
+- Cover art of the current song via our own API. Cover Fallback goes to [iTunes API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/)
 - Responsive design
+- AI descriptions for songs
+- MSE (Media Source Extensions) for streaming audio
+- Multiple languages supported
+- You can't use it for Shoutcast or Icecast servers anymore!
 
-## Keyboard Controls:
+## Keyboard Controls
 - `M` - Mute/Unmute
 - `P` and `space` - Play/Pause
 - `Arrow Up` and `Arrow Down` - Increase/Decrease volume
