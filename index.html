@@ -8,9 +8,9 @@
     <meta name="description" content="spChangeToRadioDescription" />
     <link rel="icon" href="spChangeToRadioFaviconURL" type="image/png" />
     <link rel="stylesheet" href="https://login.streampanel.net/templates/universal/assets/global/plugins/fontawesome/5.15.2/css/all.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://login.streampanel.net/templates/universal/assets/global/plugins/animate/3.7.2/animate.min.css" />
+    <link rel="stylesheet" href="https://login.streampanel.net/templates/universal/assets/global/plugins/animate/3.7.2/animate.min.css" />
+    <link rel="stylesheet" ref="https://login.streampanel.net/templates/universal/assets/global/plugins/bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://scripts.streampanel.net/spcast/player/default/css/style.min.css" />
-    <link rel="stylesheet" href="https://login.streampanel.net/templates/universal/assets/global/plugins/bootstrap/4.3.1/css/bootstrap.min.css" />
     <style type="text/css">
       .cover-site {
         min-width: 100%;
@@ -156,8 +156,8 @@
                     aria-labelledby="song1-artist song1-title"
                   ></div>
                   <div class="music-info">
-                    <div id="song1-title" class="song">Song 1</div>
-                    <div id="song1-artist" class="artist">Artist 1</div>
+                    <div id="song1-title" class="song">...</div>
+                    <div id="song1-artist" class="artist">...</div>
                   </div>
                 </article>
 
@@ -172,8 +172,8 @@
                     aria-labelledby="song2-artist song2-title"
                   ></div>
                   <div class="music-info">
-                    <div id="song2-title" class="song">Song 2</div>
-                    <div id="song2-artist" class="artist">Artist 2</div>
+                    <div id="song2-title" class="song">...</div>
+                    <div id="song2-artist" class="artist">...</div>
                   </div>
                 </article>
 
@@ -188,8 +188,8 @@
                     aria-labelledby="song3-artist song3-title"
                   ></div>
                   <div class="music-info">
-                    <div id="song3-title" class="song">Song 3</div>
-                    <div id="song3-artist" class="artist">Artist 3</div>
+                    <div id="song3-title" class="song">...</div>
+                    <div id="song3-artist" class="artist">...</div>
                   </div>
                 </article>
 
@@ -204,8 +204,8 @@
                     aria-labelledby="song4-artist song4-title"
                   ></div>
                   <div class="music-info">
-                    <div id="song4-title" class="song">Song 4</div>
-                    <div id="song4-artist" class="artist">Artist 4</div>
+                    <div id="song4-title" class="song">...</div>
+                    <div id="song4-artist" class="artist">...</div>
                   </div>
                 </article>
 
@@ -220,8 +220,8 @@
                     aria-labelledby="song5-artist song5-title"
                   ></div>
                   <div class="music-info">
-                    <div id="song5-title" class="song">Song 5</div>
-                    <div id="song5-artist" class="artist">Artist 5</div>
+                    <div id="song5-title" class="song">...</div>
+                    <div id="song5-artist" class="artist">...</div>
                   </div>
                 </article>
 
@@ -236,8 +236,8 @@
                     aria-labelledby="song6-artist song6-title"
                   ></div>
                   <div class="music-info">
-                    <div id="song6-title" class="song">Song 6</div>
-                    <div id="song6-artist" class="artist">Artist 6</div>
+                    <div id="song6-title" class="song">...</div>
+                    <div id="song6-artist" class="artist">...</div>
                   </div>
                 </article>
               </div>
@@ -280,7 +280,9 @@
                 spChangeToUseCashbox
                 <a href="https://spChangeToHostname/privacy.html" target="_blank" rel="noopener"><span id="privacyText">...</span></a> |
                 <a href="https://www.spcast.eu/kontakt/cookies/" target="_blank" rel="noopener"><span id="cookiesText">...</span></a> |
-                <a href="https://spChangeToHostname/imprint.html" target="_blank" rel="noopener"><span id="imprintText">...</span></a
+                <a href="https://spChangeToHostname/imprint.html" target="_blank" rel="noopener"><span id="imprintText">...</span></a> |
+                <a href="https://www.spcast.eu/shoutcast/" target="_blank" rel="noopener"><span id="shoutcastText">...</span></a> |
+                <a href="https://www.spcast.eu/icecast/" target="_blank" rel="noopener"><span id="icecastText">...</span></a>
                 ><br /><br />
               </div>
             </div>
@@ -346,6 +348,8 @@
         document.querySelector("#privacyText").textContent = translations[lang].privacyText;
         document.querySelector("#imprintText").textContent = translations[lang].imprintText;
         document.querySelector("#cookiesText").textContent = translations[lang].cookiesText;
+        document.querySelector("#shoutcastText").textContent = translations[lang].shoutcastText;
+        document.querySelector("#icecastText").textContent = translations[lang].icecastText;
         var flags = document.querySelectorAll(".aboutus a img");
         var languages = [
           "Deutsch",

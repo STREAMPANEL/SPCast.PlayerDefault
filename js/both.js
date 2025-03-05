@@ -64,6 +64,8 @@ const translations = {
     volumeIconLabel: "Volume icon",
     volumeSliderLabel: "Adjust volume",
     clickForDetails: "Click to view details",
+    shoutcastText: "Shoutcast Webradio",
+    icecastText: "Icecast Webradio",
   },
   de: {
     historyTitle: "Historie",
@@ -102,6 +104,8 @@ const translations = {
     volumeIconLabel: "Lautstärke Symbol",
     volumeSliderLabel: "Lautstärke anpassen",
     clickForDetails: "Klicke, um Details zu sehen",
+    shoutcastText: "Shoutcast Webradio",
+    icecastText: "Icecast Webradio",
   },
   fr: {
     historyTitle: "Histoire",
@@ -140,6 +144,8 @@ const translations = {
     volumeIconLabel: "Icône de volume",
     volumeSliderLabel: "Régler le volume",
     clickForDetails: "Cliquez pour voir les détails",
+    shoutcastText: "Webradio Shoutcast",
+    icecastText: "Webradio Icecast",
   },
   es: {
     historyTitle: "Historia",
@@ -178,6 +184,8 @@ const translations = {
     volumeIconLabel: "Icono de volumen",
     volumeSliderLabel: "Ajustar el volumen",
     clickForDetails: "Haz clic para ver detalles",
+    shoutcastText: "Shoutcast Radio Web",
+    icecastText: "Icecast Radio Web",
   },
   it: {
     historyTitle: "Storia",
@@ -216,6 +224,8 @@ const translations = {
     volumeIconLabel: "Icona del volume",
     volumeSliderLabel: "Regola il volume",
     clickForDetails: "Clicca per vedere i dettagli",
+    shoutcastText: "Shoutcast Webradio",
+    icecastText: "Icecast Webradio",
   },
   pt: {
     historyTitle: "História",
@@ -254,6 +264,8 @@ const translations = {
     volumeIconLabel: "Ícone de volume",
     volumeSliderLabel: "Ajustar volume",
     clickForDetails: "Clique para ver detalhes",
+    shoutcastText: "Shoutcast Webrádio",
+    icecastText: "Icecast Webrádio",
   },
   nl: {
     historyTitle: "Geschiedenis",
@@ -292,6 +304,8 @@ const translations = {
     volumeIconLabel: "Volume-icoon",
     volumeSliderLabel: "Volume aanpassen",
     clickForDetails: "Klik om details te bekijken",
+    shoutcastText: "Shoutcast Webradio",
+    icecastText: "Icecast Webradio",
   },
   sv: {
     historyTitle: "Historia",
@@ -330,6 +344,8 @@ const translations = {
     volumeIconLabel: "Volymikon",
     volumeSliderLabel: "Justera volym",
     clickForDetails: "Klicka för att se detaljer",
+    shoutcastText: "Shoutcast Webbradio",
+    icecastText: "Icecast Webbradio",
   },
   pl: {
     historyTitle: "Historia",
@@ -368,6 +384,8 @@ const translations = {
     volumeIconLabel: "Ikona głośności",
     volumeSliderLabel: "Dostosuj głośność",
     clickForDetails: "Kliknij, aby zobaczyć szczegóły",
+    shoutcastText: "Shoutcast Radio Internetowe",
+    icecastText: "Icecast Radio Internetowe",
   },
   cs: {
     historyTitle: "Historie",
@@ -406,6 +424,8 @@ const translations = {
     volumeIconLabel: "Ikona hlasitosti",
     volumeSliderLabel: "Upravit hlasitost",
     clickForDetails: "Klikněte pro zobrazení podrobností",
+    shoutcastText: "Shoutcast Webové rádio",
+    icecastText: "Icecast Webové rádio",
   },
   hu: {
     historyTitle: "Történelem",
@@ -444,6 +464,8 @@ const translations = {
     volumeIconLabel: "Hangerő ikon",
     volumeSliderLabel: "Hangerő beállítása",
     clickForDetails: "Kattintson a részletek megtekintéséhez",
+    shoutcastText: "Shoutcast Webrádió",
+    icecastText: "Icecast Webrádió",
   },
   da: {
     historyTitle: "Historie",
@@ -482,6 +504,8 @@ const translations = {
     volumeIconLabel: "Lydikon",
     volumeSliderLabel: "Juster lydstyrke",
     clickForDetails: "Klik for at se detaljer",
+    shoutcastText: "Shoutcast Webradio",
+    icecastText: "Icecast Webradio",
   },
   fi: {
     historyTitle: "Historia",
@@ -520,6 +544,8 @@ const translations = {
     volumeIconLabel: "Äänenvoimakkuuden kuvake",
     volumeSliderLabel: "Säädä äänenvoimakkuutta",
     clickForDetails: "Napsauta nähdäksesi tiedot",
+    shoutcastText: "Shoutcast Nettiradio",
+    icecastText: "Icecast Nettiradio",
   },
   et: {
     historyTitle: "Ajalugu",
@@ -558,6 +584,8 @@ const translations = {
     volumeIconLabel: "Helitugevuse ikoon",
     volumeSliderLabel: "Muuda helitugevust",
     clickForDetails: "Klõpsa, et näha üksikasju",
+    shoutcastText: "Shoutcast Veebiraadio",
+    icecastText: "Icecast Veebiraadio",
   },
   lt: {
     historyTitle: "Istorija",
@@ -596,6 +624,8 @@ const translations = {
     volumeIconLabel: "Garso piktograma",
     volumeSliderLabel: "Reguliuoti garso lygį",
     clickForDetails: "Spustelėkite norėdami pamatyti detales",
+    shoutcastText: "Shoutcast Interneto radijas",
+    icecastText: "Icecast Interneto radijas",
   },
   lv: {
     historyTitle: "Vēsture",
@@ -634,6 +664,8 @@ const translations = {
     volumeIconLabel: "Skaļuma ikona",
     volumeSliderLabel: "Regulēt skaļumu",
     clickForDetails: "Noklikšķiniet, lai skatītu informāciju",
+    shoutcastText: "Shoutcast Internetradio",
+    icecastText: "Icecast Internetradio",
   },
   ro: {
     historyTitle: "Istoric",
@@ -672,6 +704,8 @@ const translations = {
     volumeIconLabel: "Pictograma volum",
     volumeSliderLabel: "Ajustează volumul",
     clickForDetails: "Faceți clic pentru a vedea detalii",
+    shoutcastText: "Shoutcast Radio Online",
+    icecastText: "Icecast Radio Online",
   },
   sk: {
     historyTitle: "História",
@@ -710,6 +744,8 @@ const translations = {
     volumeIconLabel: "Ikona hlasitosti",
     volumeSliderLabel: "Upraviť hlasitosť",
     clickForDetails: "Kliknite pre zobrazenie podrobností",
+    shoutcastText: "Shoutcast Internetové rádio",
+    icecastText: "Icecast Internetové rádio",
   },
   sl: {
     historyTitle: "Zgodovina",
@@ -748,6 +784,8 @@ const translations = {
     volumeIconLabel: "Ikona glasnosti",
     volumeSliderLabel: "Prilagodi glasnost",
     clickForDetails: "Kliknite za ogled podrobnosti",
+    shoutcastText: "Shoutcast Spletni radio",
+    icecastText: "Icecast Spletni radio",
   },
   bg: {
     historyTitle: "История",
@@ -786,6 +824,8 @@ const translations = {
     volumeIconLabel: "Икона за сила на звука",
     volumeSliderLabel: "Регулиране на силата на звука",
     clickForDetails: "Щракнете, за да видите подробности",
+    shoutcastText: "Shoutcast Уеб радио",
+    icecastText: "Icecast Уеб радио",
   },
   hr: {
     historyTitle: "Povijest",
@@ -824,6 +864,8 @@ const translations = {
     volumeIconLabel: "Ikona glasnoće",
     volumeSliderLabel: "Prilagodi glasnoću",
     clickForDetails: "Kliknite za prikaz pojedinosti",
+    shoutcastText: "Shoutcast Internetski radio",
+    icecastText: "Icecast Internetski radio",
   },
   el: {
     historyTitle: "Ιστορία",
@@ -862,6 +904,8 @@ const translations = {
     volumeIconLabel: "Εικονίδιο έντασης ήχου",
     volumeSliderLabel: "Ρύθμιση έντασης ήχου",
     clickForDetails: "Κάντε κλικ για να δείτε λεπτομέρειες",
+    shoutcastText: "Shoutcast Διαδικτυακό ραδιόφωνο",
+    icecastText: "Icecast Διαδικτυακό ραδιόφωνο",
   },
 };
 
