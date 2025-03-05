@@ -18,6 +18,7 @@ You can find more about SPCast [here](https://www.spcast.eu/).
 - AI descriptions for songs
 - MSE (Media Source Extensions) for streaming audio
 - Multiple languages supported
+- Tab, Tastatur support for screen readers
 - You can't use it for Shoutcast or Icecast servers anymore!
 
 ## Keyboard Controls

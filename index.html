@@ -1,265 +1,380 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="robots" content="index, follow" />
     <meta name="description" content="spChangeToRadioDescription" />
     <link rel="icon" href="spChangeToRadioFaviconURL" type="image/png" />
-    <link rel="stylesheet" href="https://spuassets.streampanel.cloud/global/plugins/fontawesome/5.15.2/css/all.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://spuassets.streampanel.cloud/global/plugins/animate/3.7.2/animate.min.css" />
+    <link rel="stylesheet" href="https://login.streampanel.net/templates/universal/assets/global/plugins/fontawesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://login.streampanel.net/templates/universal/assets/global/plugins/animate/3.7.2/animate.min.css" />
     <link rel="stylesheet" href="https://scripts.streampanel.net/spcast/player/default/css/style.min.css" />
-    <link rel="stylesheet" href="https://spuassets.streampanel.cloud/global/plugins/bootstrap/4.3.1/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="https://login.streampanel.net/templates/universal/assets/global/plugins/bootstrap/4.3.1/css/bootstrap.min.css" />
     <style type="text/css">
-        .cover-site {
-            min-width: 100%;
-            min-height: 100%;
-            position: fixed;
-            background: url('spChangeToRadioBackgroundURL') no-repeat;
-            background-position: center;
-            background-size: cover;
-            transition: background-image 1s;
-            background-attachment: fixed;
-        }
+      .cover-site {
+        min-width: 100%;
+        min-height: 100%;
+        position: fixed;
+        background: url("spChangeToRadioBackgroundURL") no-repeat center center;
+        background-size: cover;
+        transition: background-image 1s;
+        background-attachment: fixed;
+      }
 
-        .cover-album {
-            max-width: 80%;
-            margin: auto;
-            background: url('spChangeToRadioLogoURL') no-repeat;
-            background-size: cover;
-            border: 1px solid #383838;
-            box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.4);
-            transition: background-image 1s;
-            margin-bottom: 15px;
-        }
+      .cover-album {
+        max-width: 80%;
+        margin: auto;
+        background: url("spChangeToRadioLogoURL") no-repeat center center;
+        background-size: cover;
+        border: 1px solid #383838;
+        box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.4);
+        transition: background-image 1s;
+        margin-bottom: 15px;
+      }
 
-        .historic .cover-historic {
-            width: 95px;
-            height: 95px;
-            margin-right: 15px;
-            float: left;
-            background: url('spChangeToRadioNoCoverURL') no-repeat;
-            background-size: cover;
-            border: 1px solid #383838;
-            box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
-            transition: background-image 1s;
-            cursor: pointer;
-        }
+      .historic .cover-historic {
+        width: 95px;
+        height: 95px;
+        margin-right: 15px;
+        float: left;
+        background: url("spChangeToRadioNoCoverURL") no-repeat center center;
+        background-size: cover;
+        border: 1px solid #383838;
+        box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+        transition: background-image 1s;
+        cursor: pointer;
+      }
 
-        a {
-            color: white;
-        }
+      a {
+        color: white;
+      }
 
-        a:hover {
-            color: white;
-        }
+      a:hover {
+        color: white;
+      }
 
-        .aboutus {
-            color: white;
-        }
+      .aboutus {
+        color: white;
+      }
 
-        .sp_margin_bottom {
-            margin-bottom: 15px;
-        }
+      .sp_margin_bottom {
+        margin-bottom: 15px;
+      }
 
-        .volume-slide.col-10.text-center {
-            margin-left: 10px;
-        }
+      .volume-slide.col-10.text-center {
+        margin-left: 10px;
+      }
 
-        .modal-content {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff !important;
-            border-radius: 0;
-        }
+      .modal-content {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff !important;
+        border-radius: 0;
+      }
 
-        .modal-content .btn {
-            border-radius: 0;
-        }
+      .modal-content .btn {
+        border-radius: 0;
+      }
     </style>
-
     <script>
-        var _mtm = window._mtm = window._mtm || [];
-        _mtm.push({ 'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start' });
-        (function () {
-            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-            g.async = true; g.src = 'https://pw.spcast.eu/js/container_KVNJAR2p_rewrite.js'; s.parentNode.insertBefore(g, s);
-        })();
+      var _mtm = (window._mtm = window._mtm || []);
+      _mtm.push({ "mtm.startTime": new Date().getTime(), event: "mtm.Start" });
+      (function () {
+        var d = document,
+          g = d.createElement("script"),
+          s = d.getElementsByTagName("script")[0];
+        g.async = true;
+        g.src = "https://pw.spcast.eu/js/container_KVNJAR2p_rewrite.js";
+        s.parentNode.insertBefore(g, s);
+      })();
     </script>
-</head>
+  </head>
 
-<body>
-    <div class="cover-site">
-        <div id="bgCover"></div>
-        <div class="bg-mask"></div>
+  <body>
+    <div class="cover-site" role="img" aria-label="">
+      <div id="bgCover"></div>
+      <div class="bg-mask"></div>
     </div>
     <main>
-        <section id="player">
-            <div class="container">
-                <div class="row web-player">
-                    <div class="col-12 col-lg-10">
-                        <div class="row">
-                            <div class="col-12 col-md-5">
-                                <div class="cover-album">
-                                    <div id="currentCoverArt"></div>
-                                    <a href="https://www.spcast.eu/html5-player/" target="_blank" rel="noopener" class="watermark"></a>
-                                </div>
+      <section id="player">
+        <div class="container">
+          <div class="row web-player">
+            <div class="col-12 col-lg-10">
+              <div class="row">
+                <div class="col-12 col-md-5">
+                  <div class="cover-album" role="img" aria-label="">
+                    <div id="currentCoverArt" tabindex="0"></div>
+                    <a href="https://www.spcast.eu/html5-player/" target="_blank" rel="noopener" class="watermark" aria-label=""></a>
+                  </div>
+                </div>
+                <div class="col-12 ml-md-auto col-md-6">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="info-current-song">
+                        <h2 id="currentSong" class="current-song text-uppercase">...</h2>
+                        <h3 id="currentArtist" class="current-artist text-captalize">...</h3>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="play-pause col-12 col-md-2 text-center">
+                          <i id="playerButton" class="fas fa-play" onclick="togglePlay()" role="button" tabindex="0" aria-label=""></i>
+                        </div>
+                        <div class="col-12 col-md-10 text-center">
+                          <div class="row volume-control">
+                            <div class="volume-icon col-1">
+                              <i class="fas fa-volume-up" aria-label=""></i>
                             </div>
-                            <div class="col-12 ml-md-auto col-md-6">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="info-current-song">
-                                            <h2 id="currentSong" class="current-song text-uppercase">...</h2>
-                                            <h3 id="currentArtist" class="current-artist text-captalize">...</h3>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="play-pause col-12 col-md-2 text-center">
-                                                <i id="playerButton" class="fas fa-play" onclick="togglePlay()"></i>
-                                            </div>
-                                            <div class="col-12 col-md-10 text-center">
-                                                <div class="row volume-control">
-                                                    <div class="volume-icon col-1"><i class="fas fa-volume-up"></i>
-                                                    </div>
-                                                    <div class="volume-slide col-10 text-center"><input title="Lautstärken Slider" type="range" id="volume" step="1" min="0" max="100" value="50" />
-                                                    </div>
-                                                    <div class="percentual-volume col-12"><span id="volumeText">Lautstärke</span> <span id="volIndicator">...</span>%</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="volume-slide col-10 text-center">
+                              <input type="range" id="volume" step="1" min="0" max="100" value="50" aria-label="" />
                             </div>
+                            <div class="percentual-volume col-12">
+                              <span id="volumeText">...</span>
+                              <span id="volIndicator">...</span>%
+                            </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-                <div class="row historic">
-                    <div class="col-12">
-                        <h2 id="historyTitle">Historie</h2>
-                        <div class="row" id="historicSong">
-                            <article class="col-12 col-md-6">
-                                <div class="cover-historic" data-artist="artist1" data-song="song1" onclick="openModal(this)"></div>
-                                <div class="music-info">
-                                    <div class="song">...</div>
-                                    <div class="artist">...</div>
-                                </div>
-                            </article>
-                            <article class="col-12 col-md-6">
-                                <div class="cover-historic" data-artist="artist2" data-song="song2" onclick="openModal(this)"></div>
-                                <div class="music-info">
-                                    <div class="song">...</div>
-                                    <div class="artist">...</div>
-                                </div>
-                            </article>
-                            <article class="col-12 col-md-6">
-                                <div class="cover-historic" data-artist="artist3" data-song="song3" onclick="openModal(this)"></div>
-                                <div class="music-info">
-                                    <div class="song">...</div>
-                                    <div class="artist">...</div>
-                                </div>
-                            </article>
-                            <article class="col-12 col-md-6">
-                                <div class="cover-historic" data-artist="artist4" data-song="song4" onclick="openModal(this)"></div>
-                                <div class="music-info">
-                                    <div class="song">...</div>
-                                    <div class="artist">...</div>
-                                </div>
-                            </article>
-                            <article class="col-12 col-md-6">
-                                <div class="cover-historic" data-artist="artist5" data-song="song5" onclick="openModal(this)"></div>
-                                <div class="music-info">
-                                    <div class="song">...</div>
-                                    <div class="artist">...</div>
-                                </div>
-                            </article>
-                            <article class="col-12 col-md-6">
-                                <div class="cover-historic" data-artist="artist6" data-song="song6" onclick="openModal(this)"></div>
-                                <div class="music-info">
-                                    <div class="song">...</div>
-                                    <div class="artist">...</div>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-                <div class="row historic sp_margin_bottom">
-                    <div class="col-12">
-                        <h2 id="languageTitle">Sprache</h2>
-                        <div class="aboutus">
-                            <a href="index.html"><img src="images/de.svg?version=099035" alt="Deutsch" height="20px" /></a>
-                            <a href="index.html?lang=en"><img src="images/en.svg?version=099035" alt="Englisch" height="20px" /></a>
-                            <a href="index.html?lang=fr"><img src="images/fr.svg?version=099035" alt="Franzoesisch" height="20px" /></a>
-                            <a href="index.html?lang=es"><img src="images/es.svg?version=099035" alt="Spanisch" height="20px" /></a>
-                            <a href="index.html?lang=it"><img src="images/it.svg?version=099035" alt="Italienisch" height="20px" /></a>
-                            <a href="index.html?lang=pt"><img src="images/pt.svg?version=099035" alt="Portugiesisch" height="20px" /></a>
-                            <a href="index.html?lang=nl"><img src="images/nl.svg?version=099035" alt="Niederlaendisch" height="20px" /></a>
-                            <a href="index.html?lang=sv"><img src="images/sv.svg?version=099035" alt="Schwedisch" height="20px" /></a>
-                            <a href="index.html?lang=pl"><img src="images/pl.svg?version=099035" alt="Polnisch" height="20px" /></a>
-                            <a href="index.html?lang=cs"><img src="images/cs.svg?version=099035" alt="Tschechisch" height="20px" /></a>
-                            <a href="index.html?lang=hu"><img src="images/hu.svg?version=099035" alt="Ungarisch" height="20px" /></a>
-                            <a href="index.html?lang=da"><img src="images/da.svg?version=099035" alt="Daenisch" height="20px" /></a>
-                            <a href="index.html?lang=fi"><img src="images/fi.svg?version=099035" alt="Finnisch" height="20px" /></a>
-                            <a href="index.html?lang=et"><img src="images/et.svg?version=099035" alt="Estnisch" height="20px" /></a>
-                            <a href="index.html?lang=lt"><img src="images/lt.svg?version=099035" alt="Litauisch" height="20px" /></a>
-                            <a href="index.html?lang=lv"><img src="images/lv.svg?version=099035" alt="Lettisch" height="20px" /></a>
-                            <a href="index.html?lang=ro"><img src="images/ro.svg?version=099035" alt="Rumaenisch" height="20px" /></a>
-                            <a href="index.html?lang=sk"><img src="images/sk.svg?version=099035" alt="Slowakisch" height="20px" /></a>
-                            <a href="index.html?lang=sl"><img src="images/sl.svg?version=099035" alt="Slowenisch" height="20px" /></a>
-                            <a href="index.html?lang=bg"><img src="images/bg.svg?version=099035" alt="Bulgarisch" height="20px" /></a>
-                            <a href="index.html?lang=hr"><img src="images/hr.svg?version=099035" alt="Kroatisch" height="20px" /></a>
-                            <a href="index.html?lang=el"><img src="images/el.svg?version=099035" alt="Griechisch" height="20px" /></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row historic">
-                    <div class="col-12">
-                        <h2 id="aboutUsTitle">Über Uns</h2>
-                        <div class="aboutus">
-                            spChangeToUseCashbox<a href="https://spChangeToHostname/privacy.html" target="_blank" rel="noopener"><span id="privacyText">Datenschutz</span></a> | <a
-                                href="https://www.spcast.eu/kontakt/cookies/" target="_blank" rel="noopener"><span id="cookiesText">Cookies</span></a> | <a
-                                href="https://spChangeToHostname/imprint.html" target="_blank" rel="noopener"><span id="imprintText">Impressum</span></a><br> <br>
-                        </div>
-                    </div>
-                </div>
-        </section>
-    </main>
-
-    <!-- Modal Structure -->
-    <div class="modal fade" id="modalInfos" tabindex="-1" role="dialog" aria-labelledby="infosSong" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="infosSong">Info</h5>
-                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="info"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-                </div>
+              </div>
             </div>
+          </div>
+          <div class="row historic">
+            <div class="col-12">
+              <h2 id="historyTitle">...</h2>
+              <div class="row" id="historicSong">
+                <article class="col-12 col-md-6">
+                  <div
+                    class="cover-historic"
+                    data-artist="artist1"
+                    data-song="song1"
+                    onclick="openModal(this)"
+                    role="button"
+                    tabindex="0"
+                    aria-labelledby="song1-artist song1-title"
+                  ></div>
+                  <div class="music-info">
+                    <div id="song1-title" class="song">Song 1</div>
+                    <div id="song1-artist" class="artist">Artist 1</div>
+                  </div>
+                </article>
+
+                <article class="col-12 col-md-6">
+                  <div
+                    class="cover-historic"
+                    data-artist="artist2"
+                    data-song="song2"
+                    onclick="openModal(this)"
+                    role="button"
+                    tabindex="0"
+                    aria-labelledby="song2-artist song2-title"
+                  ></div>
+                  <div class="music-info">
+                    <div id="song2-title" class="song">Song 2</div>
+                    <div id="song2-artist" class="artist">Artist 2</div>
+                  </div>
+                </article>
+
+                <article class="col-12 col-md-6">
+                  <div
+                    class="cover-historic"
+                    data-artist="artist3"
+                    data-song="song3"
+                    onclick="openModal(this)"
+                    role="button"
+                    tabindex="0"
+                    aria-labelledby="song3-artist song3-title"
+                  ></div>
+                  <div class="music-info">
+                    <div id="song3-title" class="song">Song 3</div>
+                    <div id="song3-artist" class="artist">Artist 3</div>
+                  </div>
+                </article>
+
+                <article class="col-12 col-md-6">
+                  <div
+                    class="cover-historic"
+                    data-artist="artist4"
+                    data-song="song4"
+                    onclick="openModal(this)"
+                    role="button"
+                    tabindex="0"
+                    aria-labelledby="song4-artist song4-title"
+                  ></div>
+                  <div class="music-info">
+                    <div id="song4-title" class="song">Song 4</div>
+                    <div id="song4-artist" class="artist">Artist 4</div>
+                  </div>
+                </article>
+
+                <article class="col-12 col-md-6">
+                  <div
+                    class="cover-historic"
+                    data-artist="artist5"
+                    data-song="song5"
+                    onclick="openModal(this)"
+                    role="button"
+                    tabindex="0"
+                    aria-labelledby="song5-artist song5-title"
+                  ></div>
+                  <div class="music-info">
+                    <div id="song5-title" class="song">Song 5</div>
+                    <div id="song5-artist" class="artist">Artist 5</div>
+                  </div>
+                </article>
+
+                <article class="col-12 col-md-6">
+                  <div
+                    class="cover-historic"
+                    data-artist="artist6"
+                    data-song="song6"
+                    onclick="openModal(this)"
+                    role="button"
+                    tabindex="0"
+                    aria-labelledby="song6-artist song6-title"
+                  ></div>
+                  <div class="music-info">
+                    <div id="song6-title" class="song">Song 6</div>
+                    <div id="song6-artist" class="artist">Artist 6</div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="row historic sp_margin_bottom">
+            <div class="col-12">
+              <h2 id="languageTitle">...</h2>
+              <div class="aboutus">
+                <a href="index.html"><img src="images/de.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=en"><img src="images/en.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=fr"><img src="images/fr.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=es"><img src="images/es.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=it"><img src="images/it.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=pt"><img src="images/pt.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=nl"><img src="images/nl.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=sv"><img src="images/sv.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=pl"><img src="images/pl.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=cs"><img src="images/cs.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=hu"><img src="images/hu.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=da"><img src="images/da.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=fi"><img src="images/fi.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=et"><img src="images/et.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=lt"><img src="images/lt.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=lv"><img src="images/lv.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=ro"><img src="images/ro.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=sk"><img src="images/sk.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=sl"><img src="images/sl.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=bg"><img src="images/bg.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=hr"><img src="images/hr.svg" alt="" height="20px" /></a>
+                <a href="index.html?lang=el"><img src="images/el.svg" alt="" height="20px" /></a>
+              </div>
+            </div>
+          </div>
+          <div class="row historic">
+            <div class="col-12">
+              <h2 id="aboutUsTitle">...</h2>
+              <div class="aboutus">
+                spChangeToUseCashbox
+                <a href="https://spChangeToHostname/privacy.html" target="_blank" rel="noopener"><span id="privacyText">...</span></a> |
+                <a href="https://www.spcast.eu/kontakt/cookies/" target="_blank" rel="noopener"><span id="cookiesText">...</span></a> |
+                <a href="https://spChangeToHostname/imprint.html" target="_blank" rel="noopener"><span id="imprintText">...</span></a
+                ><br /><br />
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+    </main>
+    <div class="modal fade" id="modalInfos" tabindex="-1" role="dialog" aria-labelledby="infosSong" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="infosSong">Info</h5>
+            <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="info"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <script type="text/javascript" src="https://spuassets.streampanel.cloud/global/plugins/jquery/3.6.0/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://spuassets.streampanel.cloud/global/plugins/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script type="text/javascript" src="https://spuassets.streampanel.cloud/global/plugins/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-        var settings = {
-            'radio_name': 'spChangeToRadioName',
-            'url_streaming': 'https://spChangeToHostname/stream',
-            'url_hostname': 'spChangeToHostname',
-            'historic': true,
-            'sp_userid': 'spChangeToServiceID',
-            'default_cover_art': 'spChangeToRadioNoCoverURL',
-        };
+    <script src="https://login.streampanel.net/templates/universal/assets/global/plugins/jquery/3.6.0/jquery-3.6.0.min.js"></script>
+    <script src="https://login.streampanel.net/templates/universal/assets/global/plugins/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://login.streampanel.net/templates/universal/assets/global/plugins/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+      var settings = {
+        radio_name: "spChangeToRadioName",
+        url_streaming: "https://spChangeToHostname/stream",
+        url_hostname: "spChangeToHostname",
+        historic: true,
+        sp_userid: "spChangeToServiceID",
+        default_cover_art: "spChangeToRadioNoCoverURL",
+      };
     </script>
-    <script type="text/javascript" src="https://scripts.streampanel.net/spcast/player/default/js/both.js"></script>
-    <script type="text/javascript" src="https://scripts.streampanel.net/spcast/player/default/js/scripts.min.js"></script>
-</body>
+    <script src="https://scripts.streampanel.net/spcast/player/default/js/both.min.js"></script>
+    <script src="https://scripts.streampanel.net/spcast/player/default/js/scripts.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var lang = "de";
+        if (window.location.href.indexOf("?lang=") !== -1) {
+          lang = window.location.href.split("?lang=")[1];
+        }
+        if (!translations[lang]) {
+          lang = "de";
+        }
 
+        document.querySelectorAll(".cover-historic").forEach((element) => {
+          element.setAttribute("title", translations[lang].clickForDetails);
+        });
+
+        document.querySelector(".cover-site").setAttribute("aria-label", translations[lang].radioBackgroundLabel);
+        document.querySelector(".cover-album").setAttribute("aria-label", translations[lang].coverAlbumLabel);
+        document.querySelector(".watermark").setAttribute("aria-label", translations[lang].watermarkLabel);
+        document.querySelector("#playerButton").setAttribute("aria-label", translations[lang].playButtonLabel);
+        document.querySelector(".volume-icon i").setAttribute("aria-label", translations[lang].volumeIconLabel);
+        document.querySelector("#volume").setAttribute("aria-label", translations[lang].volumeSliderLabel);
+        document.querySelector("#historyTitle").textContent = translations[lang].historyTitle;
+        document.querySelector("#volumeText").textContent = translations[lang].volumeText;
+        document.querySelector("#languageTitle").textContent = translations[lang].languageTitle;
+        document.querySelector("#aboutUsTitle").textContent = translations[lang].aboutUsTitle;
+        document.querySelector("#privacyText").textContent = translations[lang].privacyText;
+        document.querySelector("#imprintText").textContent = translations[lang].imprintText;
+        document.querySelector("#cookiesText").textContent = translations[lang].cookiesText;
+        var flags = document.querySelectorAll(".aboutus a img");
+        var languages = [
+          "Deutsch",
+          "Englisch",
+          "Franzoesisch",
+          "Spanisch",
+          "Italienisch",
+          "Portugiesisch",
+          "Niederlaendisch",
+          "Schwedisch",
+          "Polnisch",
+          "Tschechisch",
+          "Ungarisch",
+          "Daenisch",
+          "Finnisch",
+          "Estnisch",
+          "Litauisch",
+          "Lettisch",
+          "Rumaenisch",
+          "Slowakisch",
+          "Slowenisch",
+          "Bulgarisch",
+          "Kroatisch",
+          "Griechisch",
+        ];
+        flags.forEach(function (flag, index) {
+          flag.setAttribute("alt", translations[lang][languages[index]]);
+        });
+      });
+    </script>
+  </body>
 </html>

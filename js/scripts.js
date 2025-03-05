@@ -1,7 +1,7 @@
-/*
+/*!
 The MIT License (MIT)
 
-Github: https://github.com/gsavio
+Github: https://github.com/STREAMPANEL/SPCast.PlayerDefault
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -21,10 +21,21 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-// Redirect Safari
+// Check Safari version and MSE support
 var uagent = navigator.userAgent.toLowerCase();
-if (/safari/.test(uagent) && !/chrome/.test(uagent)) {
+var isSafari = /safari/.test(uagent) && !/chrome/.test(uagent);
+var supportsMSE = !!window.MediaSource && MediaSource.isTypeSupported("audio/mpeg");
+
+console.log("User-Agent:", navigator.userAgent);
+console.log("Detected browser: " + (isSafari ? "Safari" : "Not Safari"));
+console.log("MSE support for audio: " + (supportsMSE ? "Yes" : "No"));
+
+// If Safari is used but does not support MSE, redirect to /stream
+if (isSafari && !supportsMSE) {
+  console.warn("MSE is not supported. Redirecting to /stream ...");
   window.location.href = "/stream";
+} else {
+  console.log("No redirect needed. Safari version supports MSE.");
 }
 
 // Declare constants for settings
@@ -61,7 +72,6 @@ document.body.appendChild(audio); // Append audio element to the body
 var mediaSource;
 var sourceBuffer;
 var fetchController;
-var reconnectInterval;
 var isPlaying = false;
 var inactivityTimeout; // Added for inactivity detection
 var useMSE = false; // Added to track whether MSE is used
@@ -99,12 +109,8 @@ function Page() {
   this.refreshHistoric = function (info, n) {
     // Selectors for song and artist name
     var $historicDiv = document.querySelectorAll("#historicSong article");
-    var $songName = document.querySelectorAll(
-      "#historicSong article .music-info .song"
-    );
-    var $artistName = document.querySelectorAll(
-      "#historicSong article .music-info .artist"
-    );
+    var $songName = document.querySelectorAll("#historicSong article .music-info .song");
+    var $artistName = document.querySelectorAll("#historicSong article .music-info .artist");
 
     // Default cover art
     var urlCoverArt = DEFAULT_COVER_ART;
@@ -113,86 +119,93 @@ function Page() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
+        var coverElement = document.querySelectorAll("#historicSong article .cover-historic")[n];
         if (this.status === 200) {
-          var data = JSON.parse(this.responseText);
-          var artworkUrl100 = data.resultCount
-            ? data.results[0].artworkUrl100
-            : null;
+          try {
+            var data = JSON.parse(this.responseText);
+            var artworkUrl100 = data.resultCount ? data.results[0].artworkUrl100 : null;
 
-          if (artworkUrl100) {
-            document.querySelectorAll("#historicSong article .cover-historic")[
-              n
-            ].style.backgroundImage = "url(" + artworkUrl100 + ")";
-          } else {
+            if (artworkUrl100) {
+              coverElement.style.backgroundImage = "url(" + artworkUrl100 + ")";
+            } else {
+              // Fallback to SP Cover API
+              fetch(
+                `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${encodeURIComponent(info.artist)} - ${encodeURIComponent(
+                  info.song
+                )}&size=medium&urlonly=yes`
+              )
+                .then((response) => {
+                  if (response.ok) {
+                    return response.text();
+                  } else {
+                    throw new Error("Cover not found");
+                  }
+                })
+                .then((url) => {
+                  coverElement.style.backgroundImage = "url(" + url + ")";
+                })
+                .catch(() => {
+                  coverElement.style.backgroundImage = "url(" + urlCoverArt + ")";
+                });
+            }
+          } catch (e) {
             // Fallback to SP Cover API
             fetch(
-              `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${info.artist} - ${info.song}&size=medium&urlonly=yes`
+              `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${encodeURIComponent(info.artist)} - ${encodeURIComponent(
+                info.song
+              )}&size=medium&urlonly=yes`
             )
               .then((response) => {
                 if (response.ok) {
                   return response.text();
                 } else {
-                  throw new Error("No cover found");
+                  throw new Error("Cover not found");
                 }
               })
               .then((url) => {
-                document.querySelectorAll(
-                  "#historicSong article .cover-historic"
-                )[n].style.backgroundImage = "url(" + url + ")";
+                coverElement.style.backgroundImage = "url(" + url + ")";
               })
               .catch(() => {
-                document.querySelectorAll(
-                  "#historicSong article .cover-historic"
-                )[n].style.backgroundImage = "url(" + urlCoverArt + ")";
+                coverElement.style.backgroundImage = "url(" + urlCoverArt + ")";
               });
           }
         } else {
           // Fallback to SP Cover API
           fetch(
-            `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${info.artist} - ${info.song}&size=medium&urlonly=yes`
+            `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${encodeURIComponent(info.artist)} - ${encodeURIComponent(
+              info.song
+            )}&size=medium&urlonly=yes`
           )
             .then((response) => {
               if (response.ok) {
                 return response.text();
               } else {
-                throw new Error("No cover found");
+                throw new Error("Cover not found");
               }
             })
             .then((url) => {
-              document.querySelectorAll(
-                "#historicSong article .cover-historic"
-              )[n].style.backgroundImage = "url(" + url + ")";
+              coverElement.style.backgroundImage = "url(" + url + ")";
             })
             .catch(() => {
-              document.querySelectorAll(
-                "#historicSong article .cover-historic"
-              )[n].style.backgroundImage = "url(" + urlCoverArt + ")";
+              coverElement.style.backgroundImage = "url(" + urlCoverArt + ")";
             });
         }
+
+        // Formatting characters to UTF-8
+        var music = info.song.replace(/&apos;/g, "'").replace(/&amp;/g, "&");
+        var artist = info.artist.replace(/&apos;/g, "'").replace(/&amp;/g, "&");
+
+        // Set song and artist name
+        $songName[n].innerHTML = music;
+        $artistName[n].innerHTML = artist;
+
+        // Add class for animation
+        $historicDiv[n].classList.add("animated");
+        $historicDiv[n].classList.add("slideInRight");
       }
-
-      // Formatting characters to UTF-8
-      var music = info.song.replace(/&apos;/g, "'").replace(/&amp;/g, "&");
-      var artist = info.artist.replace(/&apos;/g, "'").replace(/&amp;/g, "&");
-
-      // Set song and artist name
-      $songName[n].innerHTML = music;
-      $artistName[n].innerHTML = artist;
-
-      // Add class for animation
-      $historicDiv[n].classList.add("animated");
-      $historicDiv[n].classList.add("slideInRight");
     };
     // Request to iTunes API
-    xhttp.open(
-      "GET",
-      "https://itunes.apple.com/search?term=" +
-        info.artist +
-        " " +
-        info.song +
-        "&media=music&limit=1",
-      true
-    );
+    xhttp.open("GET", "https://itunes.apple.com/search?term=" + encodeURIComponent(info.artist + " " + info.song) + "&media=music&limit=1", true);
     xhttp.send();
 
     // Remove animation classes after 2 seconds
@@ -218,53 +231,75 @@ function Page() {
       // Get cover art URL on iTunes API
       if (this.readyState === 4) {
         if (this.status === 200) {
-          var data = JSON.parse(this.responseText);
-          var artworkUrl100 = data.resultCount
-            ? data.results[0].artworkUrl100
-            : null;
+          try {
+            var data = JSON.parse(this.responseText);
+            var artworkUrl100 = data.resultCount ? data.results[0].artworkUrl100 : null;
 
-          if (artworkUrl100) {
-            urlCoverArt = artworkUrl100.replace("100x100bb", "512x512bb");
-            var urlCoverArt96 = urlCoverArt.replace("512x512bb", "96x96bb");
-            var urlCoverArt128 = urlCoverArt.replace("512x512bb", "128x128bb");
-            var urlCoverArt192 = urlCoverArt.replace("512x512bb", "192x192bb");
-            var urlCoverArt256 = urlCoverArt.replace("512x512bb", "256x256bb");
-            var urlCoverArt384 = urlCoverArt.replace("512x512bb", "384x384bb");
+            if (artworkUrl100) {
+              urlCoverArt = artworkUrl100.replace("100x100bb", "512x512bb");
+              var urlCoverArt96 = urlCoverArt.replace("512x512bb", "96x96bb");
+              var urlCoverArt128 = urlCoverArt.replace("512x512bb", "128x128bb");
+              var urlCoverArt192 = urlCoverArt.replace("512x512bb", "192x192bb");
+              var urlCoverArt256 = urlCoverArt.replace("512x512bb", "256x256bb");
+              var urlCoverArt384 = urlCoverArt.replace("512x512bb", "384x384bb");
 
-            coverArt.style.backgroundImage = `url(${urlCoverArt})`;
-            coverArt.className = "animated bounceInLeft";
-            coverBackground.style.backgroundImage = `url(${urlCoverArt})`;
+              coverArt.style.backgroundImage = `url(${urlCoverArt})`;
+              coverArt.className = "animated bounceInLeft";
+              coverBackground.style.backgroundImage = `url(${urlCoverArt})`;
 
-            // Remove animation class after 2 seconds
-            setTimeout(function () {
-              coverArt.className = "";
-            }, 2000);
+              // Remove animation class after 2 seconds
+              setTimeout(function () {
+                coverArt.className = "";
+              }, 2000);
 
-            // Set media session metadata
-            if ("mediaSession" in navigator) {
-              navigator.mediaSession.metadata = new MediaMetadata({
-                title: song,
-                artist: artist,
-                artwork: [
-                  { src: urlCoverArt96, sizes: "96x96", type: "image/png" },
-                  { src: urlCoverArt128, sizes: "128x128", type: "image/png" },
-                  { src: urlCoverArt192, sizes: "192x192", type: "image/png" },
-                  { src: urlCoverArt256, sizes: "256x256", type: "image/png" },
-                  { src: urlCoverArt384, sizes: "384x384", type: "image/png" },
-                  { src: urlCoverArt, sizes: "512x512", type: "image/png" },
-                ],
-              });
+              // Set media session metadata
+              if ("mediaSession" in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                  title: song,
+                  artist: artist,
+                  artwork: [
+                    { src: urlCoverArt96, sizes: "96x96", type: "image/png" },
+                    { src: urlCoverArt128, sizes: "128x128", type: "image/png" },
+                    { src: urlCoverArt192, sizes: "192x192", type: "image/png" },
+                    { src: urlCoverArt256, sizes: "256x256", type: "image/png" },
+                    { src: urlCoverArt384, sizes: "384x384", type: "image/png" },
+                    { src: urlCoverArt, sizes: "512x512", type: "image/png" },
+                  ],
+                });
+              }
+            } else {
+              // Fallback to SP Cover API
+              fetch(
+                `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${encodeURIComponent(artist)} - ${encodeURIComponent(
+                  song
+                )}&size=medium&urlonly=yes`
+              )
+                .then((response) => {
+                  if (response.ok) {
+                    return response.text();
+                  } else {
+                    throw new Error("Cover not found");
+                  }
+                })
+                .then((url) => {
+                  coverArt.style.backgroundImage = `url(${url})`;
+                  coverBackground.style.backgroundImage = `url(${url})`;
+                })
+                .catch(() => {
+                  coverArt.style.backgroundImage = `url(${urlCoverArt})`;
+                  coverBackground.style.backgroundImage = `url(${urlCoverArt})`;
+                });
             }
-          } else {
+          } catch (e) {
             // Fallback to SP Cover API
             fetch(
-              `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${artist} - ${song}&size=medium&urlonly=yes`
+              `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${encodeURIComponent(artist)} - ${encodeURIComponent(song)}&size=medium&urlonly=yes`
             )
               .then((response) => {
                 if (response.ok) {
                   return response.text();
                 } else {
-                  throw new Error("No cover found");
+                  throw new Error("Cover not found");
                 }
               })
               .then((url) => {
@@ -279,13 +314,13 @@ function Page() {
         } else {
           // Fallback to SP Cover API
           fetch(
-            `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${artist} - ${song}&size=medium&urlonly=yes`
+            `https://cover.streampanel.net/cover-api/sp/spcast.php?title=${encodeURIComponent(artist)} - ${encodeURIComponent(song)}&size=medium&urlonly=yes`
           )
             .then((response) => {
               if (response.ok) {
                 return response.text();
               } else {
-                throw new Error("No cover found");
+                throw new Error("Cover not found");
               }
             })
             .then((url) => {
@@ -300,11 +335,7 @@ function Page() {
       }
     };
     // Request to iTunes API
-    xhttp.open(
-      "GET",
-      `https://itunes.apple.com/search?term=${artist} ${song}&media=music&limit=1`,
-      true
-    );
+    xhttp.open("GET", `https://itunes.apple.com/search?term=${encodeURIComponent(artist + " " + song)}&media=music&limit=1`, true);
     xhttp.send();
   };
 
@@ -324,9 +355,7 @@ function Page() {
     // Check if local storage is available
     if (typeof Storage !== "undefined") {
       // Set the volume from local storage or default value
-      var volumeLocalStorage = !localStorage.getItem("volume")
-        ? 80
-        : localStorage.getItem("volume");
+      var volumeLocalStorage = !localStorage.getItem("volume") ? 80 : localStorage.getItem("volume");
       document.getElementById("volume").value = volumeLocalStorage;
       document.getElementById("volIndicator").innerHTML = volumeLocalStorage;
     }
@@ -337,44 +366,44 @@ function Page() {
 function getStreamingData() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
-    // Check if the request is successful
-    if (this.readyState === 4 && this.status === 200) {
-      // Log debug message if response is empty
-      if (this.response.length === 0) {
-        console.log("%cdebug", "font-size: 22px");
-      }
+    // Check if the request is complete
+    if (this.readyState === 4) {
+      if (this.status === 200) {
+        // Parse response text into JSON object
+        try {
+          var data = JSON.parse(this.responseText);
 
-      // Parse response text into JSON object
-      var data = JSON.parse(this.responseText);
+          // Create a new page object
+          var page = new Page();
 
-      // Create a new page object
-      var page = new Page();
+          // Get current song element and format characters to UTF-8
+          let currentSongElement = document.getElementById("currentSong").innerHTML;
+          let currentSongEl = currentSongElement.replace(/&amp;|&apos;/g, (match) => (match === "&amp;" ? "&" : "'"));
+          let song = data.currentSong.replace(/&amp;|&apos;/g, (match) => (match === "&amp;" ? "&" : "'"));
+          let currentSong = song.replace("  ", " ");
+          let artist = data.currentArtist.replace(/&amp;|&apos;/g, (match) => (match === "&amp;" ? "&" : "'"));
+          let currentArtist = artist.replace("  ", " ");
 
-      // Get current song element and format characters to UTF-8
-      let currentSongElement = document.getElementById("currentSong").innerHTML;
-      let currentSongEl = currentSongElement.replace(/&amp;|&apos;/g, (match) =>
-        match === "&amp;" ? "&" : "'"
-      );
-      let song = data.currentSong.replace(/&amp;|&apos;/g, (match) =>
-        match === "&amp;" ? "&" : "'"
-      );
-      let currentSong = song.replace("  ", " ");
-      let artist = data.currentArtist.replace(/&amp;|&apos;/g, (match) =>
-        match === "&amp;" ? "&" : "'"
-      );
-      let currentArtist = artist.replace("  ", " ");
+          // Change the document title
+          document.title = `${currentSong} - ${currentArtist} | ${RADIO_NAME}`;
 
-      // Change the document title
-      document.title = `${currentSong} - ${currentArtist} | ${RADIO_NAME}`;
+          // Refresh cover, current song and historic if current song is different
+          if (currentSongEl.trim() !== currentSong.trim()) {
+            page.refreshCover(currentSong, currentArtist);
+            page.refreshCurrentSong(currentSong, currentArtist);
 
-      // Refresh cover, current song and historic if current song is different
-      if (currentSongEl.trim() !== currentSong.trim()) {
-        page.refreshCover(currentSong, currentArtist);
-        page.refreshCurrentSong(currentSong, currentArtist);
-
-        for (var i = 0; i < SP_MAX_HISTORY; i++) {
-          page.refreshHistoric(data.songHistory[i], i);
+            for (var i = 0; i < SP_MAX_HISTORY; i++) {
+              if (data.songHistory[i]) {
+                page.refreshHistoric(data.songHistory[i], i);
+              }
+            }
+          }
+        } catch (e) {
+          // Suppress JSON parsing errors
+          // console.error('Error parsing streaming data JSON:', e);
         }
+      } else {
+        console.error("Error fetching streaming data:", this.status);
       }
     }
   };
@@ -385,7 +414,9 @@ function getStreamingData() {
   // Send GET request with timestamp to prevent cache
   xhttp.open(
     "GET",
-    `https://scripts.streampanel.net/spcast/player/default/api.php?url=${URL_HOSTNAME}&userid=${SP_USERID}&historic=${HISTORIC}&t=${d.getTime()}`,
+    `https://scripts.streampanel.net/spcast/player/default/api.php?url=${encodeURIComponent(
+      URL_HOSTNAME
+    )}&userid=${SP_USERID}&historic=${HISTORIC}&t=${d.getTime()}`,
     true
   );
   xhttp.send();
@@ -403,18 +434,11 @@ function Player() {
     var mimeCodec = "audio/mpeg";
     if (window.MediaSource && MediaSource.isTypeSupported(mimeCodec)) {
       useMSE = true;
-      console.log(
-        "MSE is supported. Using MediaSource with codec: ",
-        mimeCodec
-      );
+      console.log("MSE is supported. Using MediaSource with codec: ", mimeCodec);
       initializeMediaSource();
     } else {
       useMSE = false;
-      console.log(
-        "MSE not supported with codec ",
-        mimeCodec,
-        ". Falling back to direct stream."
-      );
+      console.log("MSE not supported with codec ", mimeCodec, ". Falling back to direct stream.");
       audio.src = URL_STREAMING;
       audio.load();
       audio.play().catch((error) => {
@@ -461,6 +485,11 @@ function Player() {
 
 // Initialize MediaSource
 function initializeMediaSource() {
+  if (mediaSource) {
+    // If mediaSource already exists, we need to reset it
+    stopMediaSource();
+  }
+
   mediaSource = new MediaSource();
   audio.src = URL.createObjectURL(mediaSource);
 
@@ -473,7 +502,8 @@ function initializeMediaSource() {
     })
     .catch((error) => {
       console.error("Error playing audio with MSE: ", error);
-      attemptReconnect();
+      // Wait and try again
+      setTimeout(attemptReconnect, 5000);
     });
 }
 
@@ -514,17 +544,10 @@ function stopMediaSource() {
   var botao = document.getElementById("playerButton");
   botao.className = "fas fa-play";
 
-  if (reconnectInterval) {
-    clearInterval(reconnectInterval);
-    reconnectInterval = null;
-  }
-
   if (inactivityTimeout) {
     clearTimeout(inactivityTimeout);
     inactivityTimeout = null;
   }
-
-  isPlaying = false;
 }
 
 // Handle MediaSource events
@@ -540,10 +563,7 @@ function sourceOpen() {
     sourceBuffer.addEventListener("updateend", function () {
       // Log buffered ranges every 10 chunks
       if (chunkCount % 10 === 0) {
-        console.log(
-          "SourceBuffer update ended. Buffered ranges: ",
-          sourceBuffer.buffered
-        );
+        console.log("SourceBuffer update ended. Buffered ranges: ", sourceBuffer.buffered);
       }
     });
 
@@ -570,6 +590,9 @@ function fetchStreamData(url) {
 
   fetch(url, { signal })
     .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Network response was not ok: " + response.statusText);
+      }
       var reader = response.body.getReader();
 
       function read() {
@@ -587,9 +610,7 @@ function fetchStreamData(url) {
               clearTimeout(inactivityTimeout);
             }
             inactivityTimeout = setTimeout(function () {
-              console.log(
-                "Inactivity timeout reached. Attempting to reconnect..."
-              );
+              console.log("Inactivity timeout reached. Attempting to reconnect...");
               fetchController.abort();
               attemptReconnect();
             }, 10000); // 10 seconds of inactivity
@@ -632,10 +653,7 @@ function appendBuffer(chunk) {
     sourceBuffer.appendBuffer(chunk);
     chunkCount++;
     if (chunkCount % 10 === 0) {
-      console.log(
-        "Appended chunk to SourceBuffer. Chunk size: ",
-        chunk.byteLength
-      );
+      console.log("Appended chunk to SourceBuffer. Chunk size: ", chunk.byteLength);
     }
   } catch (e) {
     console.error("Error appending buffer: ", e);
@@ -645,12 +663,7 @@ function appendBuffer(chunk) {
       if (buffered.length > 0) {
         var removeEnd = buffered.start(0) + 5; // Remove first 5 seconds
         sourceBuffer.remove(buffered.start(0), removeEnd);
-        console.log(
-          "Removed buffer from ",
-          buffered.start(0),
-          " to ",
-          removeEnd
-        );
+        console.log("Removed buffer from ", buffered.start(0), " to ", removeEnd);
       }
     } else {
       attemptReconnect();
@@ -661,24 +674,38 @@ function appendBuffer(chunk) {
 // Automatic reconnect
 function attemptReconnect() {
   console.log("Attempting to reconnect...");
-  if (reconnectInterval) return; // Prevent multiple intervals
+  if (!isPlaying) {
+    return;
+  }
 
-  // Keep trying to reconnect every 5 seconds
-  reconnectInterval = setInterval(function () {
-    if (!isPlaying) {
-      clearInterval(reconnectInterval);
-      reconnectInterval = null;
-      return;
-    }
+  // Stop any ongoing processes
+  if (fetchController) {
+    fetchController.abort();
+    fetchController = null;
+  }
+
+  if (inactivityTimeout) {
+    clearTimeout(inactivityTimeout);
+    inactivityTimeout = null;
+  }
+
+  setTimeout(function () {
     console.log("Reconnecting...");
     if (useMSE) {
-      stopMediaSource();
       initializeMediaSource();
     } else {
+      audio.src = URL_STREAMING;
       audio.load();
-      audio.play().catch((error) => {
-        console.error("Error playing audio directly during reconnect: ", error);
-      });
+      audio
+        .play()
+        .then(() => {
+          console.log("Reconnected and playing.");
+        })
+        .catch((error) => {
+          console.error("Error playing audio directly during reconnect: ", error);
+          // Try again after delay
+          attemptReconnect();
+        });
     }
   }, 5000);
 }
